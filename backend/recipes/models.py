@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.deletion import DO_NOTHING
+from django.db.models.fields.related import ForeignKey
 from .validations import HEX_valid
 from ..users.models import User
 
@@ -7,6 +9,11 @@ from ..users.models import User
 class Ingredient(models.Model):
     name = models.CharField(max_length=200, unique=True)
     measurement_unit = models.CharField(max_length=200)
+
+
+class IngredientRecipe(models.Model):
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.DO_NOTHING)
+    amount = models.FloatField()
 
 
 class Tag(models.Model):
@@ -21,6 +28,11 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
     text = models.TextField(verbose_name='Описание рецепта')
     cooking_time = models.IntegerField()
+    pub_date = models.DateTimeField(
+        'date published',
+        auto_now_add=True,
+        db_index=True
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
