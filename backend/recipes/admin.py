@@ -1,14 +1,30 @@
-from re import search
 from django.contrib import admin
-from .models import Recipe, Tag, Ingredient
+
+from .models import Ingredient, IngredientRecipe, Recipe, Tag, TagRecipe
+
+
+class IngredientRecipeInline(admin.TabularInline):
+    model = IngredientRecipe
+    fk_name = 'recipe'
+
+
+class TagsRecipeInline(admin.TabularInline):
+    model = TagRecipe
+    fk_name = 'recipe'
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'get_ingridients', 'get_tags', 'name', 'text', 'cooking_time', 'author', )
+    list_display = ('id', 'get_ingridients', 'get_tags',
+                    'name', 'text', 'cooking_time', 'author', )
     search_fields = ('name',)
 
+    inlines = [
+        IngredientRecipeInline,
+        TagsRecipeInline,
+    ]
+
     def get_ingridients(self, obj):
-        return "\n".join([item.slug for item in obj.ingredients.all()])
+        return (" ".join([item.name for item in obj.ingredients.all()]))
     get_ingridients.short_description = 'Ингредиенты'
 
     def get_tags(self, obj):

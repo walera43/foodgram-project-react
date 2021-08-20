@@ -10,3 +10,33 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
     USERNAME_FIELD = 'email'
 
+
+class Subscribe(models.Model):
+    user = models.ForeignKey(
+        User, verbose_name='Подписчик',
+        on_delete=models.CASCADE,
+        related_name='follower'
+    )
+    author = models.ForeignKey(
+        User, verbose_name='Автор',
+        on_delete=models.CASCADE,
+        related_name='following'
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'], name='unique_subscribe'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.user} подписан на {self.author}'
