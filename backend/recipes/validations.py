@@ -12,7 +12,7 @@ def HEX_valid(HEX_string):
 
 
 def ingredient_amount_valid(value):
-    if value >= 1 and value != 0:
+    if value >= 1:
         return value
     else:
         raise ValidationError("Количество ингредиентов не может " +

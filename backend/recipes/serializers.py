@@ -78,9 +78,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('id', 'tags', 'author', 'ingredients', 'is_favorited',
-                  'is_in_shopping_cart', 'name', 'image', 'text',
-                  'cooking_time')
+        fields = '__all__'
 
     def get_is_favorited(self, obj):
         current_user = self.context['request'].user
@@ -125,6 +123,24 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ('id', 'ingredients', 'tags', 'image', 'name', 'text',
                   'cooking_time', 'author')
+    
+    def validate(self, data):
+        ingredients = self.initial_data.get('ingredients')
+        to_check = []
+        for ingredient in ingredients:
+            if ingredient['id'] in to_check:
+                raise serializers.ValidationError(
+                    'Ингредиенты не должны повторяться!'
+                )
+            to_check.append(ingredient['id'])
+        data['ingredients'] = ingredients
+        tags = self.initial_data.get('tags')
+        if len(tags) == 0:
+            raise serializers.ValidationError(
+                'Поставьте хотя бы один тег!'
+            )
+        data['tags'] = tags
+        return data
 
     def create(self, validated_data):
         tags_data = validated_data.pop('tags')
@@ -144,7 +160,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         return recipe
 
     def to_representation(self, instance):
-        return RecipeCreateSerializer(
+        return RecipeSerializer(
             instance,
             context={'request': self.context.get('request')}
         ).data

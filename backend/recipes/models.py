@@ -41,7 +41,7 @@ class Recipe(models.Model):
     image = models.ImageField()
     name = models.CharField(max_length=200)
     text = models.TextField(verbose_name='Описание рецепта')
-    cooking_time = models.IntegerField()
+    cooking_time = models.PositiveIntegerField()
     pub_date = models.DateTimeField(
         'date published',
         auto_now_add=True,

@@ -25,6 +25,10 @@ class RecipeFilter(filters.FilterSet):
         queryset=Tag.objects.all()
     )
 
+    class Meta:
+        model = Recipe
+        fields = ('author', 'tags', 'is_favorited', 'is_in_shopping_cart')
+
     def is_favorited_method(self, queryset, name, value):
         if value:
             return Recipe.objects.filter(favorite__user=self.request.user)
