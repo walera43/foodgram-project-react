@@ -1,7 +1,7 @@
 from django.db import models
 
 from ..users.models import User
-from .validations import HEX_valid, ingredient_amount_valid
+from .validations import hex_valid, ingredient_amount_valid
 
 
 class Ingredient(models.Model):
@@ -17,7 +17,7 @@ class Ingredient(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)
-    color = models.CharField(max_length=200, validators=[HEX_valid])
+    color = models.CharField(max_length=200, validators=[hex_valid])
     slug = models.SlugField(unique=True)
 
     def __str__(self) -> str:

@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Subscribe, User
-from .serializers import (SubscribeSerializer, UserDetailSerializer)
+from .serializers import SubscribeSerializer, UserDetailSerializer
 
 
 class UserViewSet(CustomViewSet):
@@ -39,8 +39,8 @@ class UserViewSet(CustomViewSet):
                     status=status.HTTP_201_CREATED
                 )
             return Response(
-                        'Нельзя подписываться на самого себя!',
-                        status=status.HTTP_400_BAD_REQUEST
+                'Нельзя подписываться на самого себя!',
+                status=status.HTTP_400_BAD_REQUEST
             )
         if self.request.method == 'DELETE':
             to_delete = get_object_or_404(

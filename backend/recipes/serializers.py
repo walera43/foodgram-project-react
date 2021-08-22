@@ -84,23 +84,20 @@ class RecipeSerializer(serializers.ModelSerializer):
         current_user = self.context['request'].user
         current_recipe = get_object_or_404(Recipe, id=obj.id)
         return (
-            current_user.is_authenticated and
-            FavoriteRecipe.objects.filter(
+            current_user.is_authenticated and FavoriteRecipe.objects.filter(
                 user=current_user,
-                recipe=current_recipe.id
-                ).exists()
-            )
+                recipe=current_recipe.id).exists()
+        )
 
     def get_is_in_shopping_cart(self, obj):
         current_user = self.context['request'].user
         current_recipe = get_object_or_404(Recipe, id=obj.id)
         return (
-            current_user.is_authenticated and
-            ShoppingCartRecipe.objects.filter(
+            current_user.is_authenticated
+            and ShoppingCartRecipe.objects.filter(
                 user=current_user,
-                recipe=current_recipe.id
-                ).exists()
-            )
+                recipe=current_recipe.id).exists()
+        )
 
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
@@ -123,7 +120,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = ('id', 'ingredients', 'tags', 'image', 'name', 'text',
                   'cooking_time', 'author')
-    
+
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
         to_check = []
