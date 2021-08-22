@@ -30,7 +30,7 @@ class UserViewSet(CustomViewSet):
                 )
                 if not created:
                     return Response(
-                        'Вы уже подписаны на автора',
+                        'Вы уже подписаны на автора!',
                         status=status.HTTP_400_BAD_REQUEST
                     )
                 serializer = SubscribeSerializer(current_author)
