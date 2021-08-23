@@ -45,7 +45,7 @@ class UserViewSet(CustomViewSet):
         to_delete = get_object_or_404(
             Subscribe,
             user=current_user,
-            author=current_author
+            author=current_author,
         )
         to_delete.delete()
         return Response(
