@@ -42,7 +42,11 @@ class UserViewSet(CustomViewSet):
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        to_delete = get_object_or_404(Subscribe, user=current_user, author=current_author)
+        to_delete = get_object_or_404(
+            Subscribe,
+            user=current_user,
+            author=current_author
+        )
         to_delete.delete()
         return Response(
             'Вы отписались от пользователя',
