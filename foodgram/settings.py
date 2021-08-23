@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'backend.recipes',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_simplejwt',
     'djoser',
     'django_filters',
 ]
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -149,11 +149,10 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
+    
     'SEARCH_PARAM': 'name',
 }
 
-AUTH_USER_MODEL = 'users.User'
-HIDE_USERS = False
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
@@ -167,5 +166,8 @@ DJOSER = {
     },
     'PERMISSIONS': {
         'user_list': ['rest_framework.permissions.AllowAny'],
-    }
+        'user': ['rest_framework.permissions.AllowAny'],
+    },
+    'HIDE_USERS': False,
+    'USER_ID_FIELD': 'id',
 }
