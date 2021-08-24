@@ -29,8 +29,8 @@ class UserViewSet(CustomViewSet):
             )
         if request.method == 'GET':
             obj, created = Subscribe.objects.get_or_create(
-                user=current_user,
-                author=current_author
+                user_id=current_user.id,
+                author_id=current_author.id
             )
             if not created:
                 return Response(
@@ -49,9 +49,9 @@ class UserViewSet(CustomViewSet):
         if request.method == 'DELETE':
             get_object_or_404(
                 Subscribe,
-                user=current_user,
-                author=current_author,
-            )
+                user_id=current_user.id,
+                author_id=current_author.id,
+            ).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
