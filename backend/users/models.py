@@ -37,6 +37,3 @@ class Subscribe(models.Model):
                 fields=['user', 'author'], name='unique_subscribe'
             )
         ]
-
-    def __str__(self):
-        return f'{self.user} подписан на {self.author}'

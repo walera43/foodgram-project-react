@@ -20,14 +20,14 @@ class UserViewSet(CustomViewSet):
 
     @action(methods=['GET', 'DELETE'], detail=True, url_path='subscribe')
     def subscribe(self, request, id):
-        current_user = request.user
         current_author = get_object_or_404(User, id=id)
+        current_user = request.user
         if current_user == current_author:
             return Response(
                 'Подписка на самого себя запрещена',
                 status=status.HTTP_400_BAD_REQUEST
             )
-        if self.request.method == 'GET':
+        if request.method == 'GET':
             obj, created = Subscribe.objects.get_or_create(
                 user=current_user,
                 author=current_author
@@ -37,21 +37,23 @@ class UserViewSet(CustomViewSet):
                     'Вы уже подписаны на этого пользователя',
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            serializer = SubscribeSerializer(current_author)
+            serializer = UserDetailSerializer(
+                current_author,
+                context={'request': request}
+            )
             return Response(
-                serializer.data,
+                data=serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        to_delete = get_object_or_404(
-            Subscribe,
-            user=current_user,
-            author=current_author,
-        )
-        to_delete.delete()
-        return Response(
-            'Вы отписались от пользователя',
-            status=status.HTTP_204_NO_CONTENT
-        )
+
+        if request.method == 'DELETE':
+            get_object_or_404(
+                Subscribe,
+                user=current_user,
+                author=current_author,
+            )
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class SubscriptionsViewSet(ListAPIView):

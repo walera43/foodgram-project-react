@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
@@ -41,8 +40,10 @@ class SubscribeSerializer(serializers.ModelSerializer):
                   'is_subscribed', 'recipes', 'recipes_count')
 
     def get_is_subscribed(self, obj):
-        author = get_object_or_404(User, id=obj.id)
-        return Subscribe.objects.filter(user__follower__author=author)
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
+            return False
+        return obj.following.filter(user=request.user, author=obj).exists()
 
     def get_recipes(self, obj):
         recipes = obj.recipes.all()
