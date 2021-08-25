@@ -130,6 +130,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                     'Ингредиенты не должны повторяться!'
                 )
             to_check.append(ingredient['id'])
+            if int(ingredient['amount']) <= 0:
+                raise serializers.ValidationError(
+                    {'amount': 'Значение не может быть '
+                               'меньше 0'}
+                )
         data['ingredients'] = ingredients
         tags = self.initial_data.get('tags')
         if len(tags) == 0:

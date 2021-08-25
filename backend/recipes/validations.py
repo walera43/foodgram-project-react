@@ -11,9 +11,9 @@ def hex_valid(hex_string):
         raise ValidationError("Введите HEX значение")
 
 
-def ingredient_amount_valid(value):
+def recipe_time_valid(value):
     if value >= 1:
         return value
     else:
-        raise ValidationError("Количество ингредиентов не может "
-                              "быть меньше одного")
+        raise ValidationError("Приготовление не может занимать "
+                              "меньше одной минуты")

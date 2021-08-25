@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
+from backend.recipes.permissions import IsAuthorOrIsAdminOrReadOnly
 from backend.recipes.models import (FavoriteRecipe, Ingredient,
                                     IngredientRecipe, Recipe,
                                     ShoppingCartRecipe, Tag)
@@ -18,7 +19,10 @@ from .serializers import (IngredientsSerializer, RecipeCreateSerializer,
 
 class ReciepsViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [
+        IsAuthenticatedOrReadOnly,
+        IsAuthorOrIsAdminOrReadOnly
+    ]
     filter_backends = [DjangoFilterBackend, ]
     filterset_class = RecipeFilter
 

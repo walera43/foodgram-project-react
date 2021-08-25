@@ -41,7 +41,9 @@ class Recipe(models.Model):
     image = models.ImageField()
     name = models.CharField(max_length=200)
     text = models.TextField(verbose_name='Описание рецепта')
-    cooking_time = models.PositiveIntegerField()
+    cooking_time = models.PositiveIntegerField(
+        validators=[ingredient_amount_valid]
+    )
     pub_date = models.DateTimeField(
         'date published',
         auto_now_add=True,
@@ -60,7 +62,7 @@ class Recipe(models.Model):
 class IngredientRecipe(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    amount = models.IntegerField(validators=[ingredient_amount_valid])
+    amount = models.IntegerField()
 
     def __str__(self):
         return f'{self.ingredient}, {self.amount}'
