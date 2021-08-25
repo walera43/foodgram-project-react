@@ -6,10 +6,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from backend.recipes.permissions import IsAuthorOrIsAdminOrReadOnly
 from backend.recipes.models import (FavoriteRecipe, Ingredient,
                                     IngredientRecipe, Recipe,
                                     ShoppingCartRecipe, Tag)
+from backend.recipes.permissions import IsAuthorOrIsAdminOrReadOnly
 
 from .filters import IngredientFilter, RecipeFilter
 from .serializers import (IngredientsSerializer, RecipeCreateSerializer,
