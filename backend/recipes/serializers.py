@@ -173,7 +173,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         IngredientRecipe.objects.filter(recipe=instance).delete()
         for new_ingredient in ingredient_data:
             IngredientRecipe.objects.create(
-                ingredient=new_ingredient['id'],
+                ingredient_id=new_ingredient['id'],
                 recipe=instance,
                 amount=new_ingredient['amount']
             )
