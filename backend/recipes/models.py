@@ -1,7 +1,7 @@
 from django.db import models
 
 from ..users.models import User
-from .validations import hex_valid, ingredient_amount_valid
+from .validations import hex_valid, recipe_time_valid
 
 
 class Ingredient(models.Model):
@@ -42,7 +42,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=200)
     text = models.TextField(verbose_name='Описание рецепта')
     cooking_time = models.PositiveIntegerField(
-        validators=[ingredient_amount_valid]
+        validators=[recipe_time_valid]
     )
     pub_date = models.DateTimeField(
         'date published',
