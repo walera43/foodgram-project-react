@@ -12,6 +12,7 @@ from backend.recipes.models import (FavoriteRecipe, Ingredient,
 from backend.recipes.permissions import IsAuthorOrIsAdminOrReadOnly
 
 from .filters import IngredientFilter, RecipeFilter
+from .paginators import CustomPageNumberPaginator
 from .serializers import (IngredientsSerializer, RecipeCreateSerializer,
                           RecipeSerializer, RecipeSerializerShort,
                           TagsListSerializer)
@@ -25,6 +26,7 @@ class ReciepsViewSet(viewsets.ModelViewSet):
     ]
     filter_backends = [DjangoFilterBackend, ]
     filterset_class = RecipeFilter
+    pagination_class = CustomPageNumberPaginator
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

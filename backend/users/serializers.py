@@ -48,6 +48,10 @@ class SubscribeSerializer(serializers.ModelSerializer):
     def get_recipes(self, obj):
         recipes = obj.recipes.all()
         request = self.context.get('request')
+        if request is not None:
+            recipes_limited = request.query_params.get('recipes_limit')
+            if recipes_limited:
+                recipes = recipes[:int(recipes_limited)]
         context = {'request': request}
         return RecipeSerializerShort(
             recipes,
